@@ -1,15 +1,20 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 
-const Link = ({active, children, onClick}) => {
+const Link = ({children, onClick}) => {
   return (
     <a
-      href="#"
+      href='#'
       onClick={e => {
         e.preventDefault()
         onClick()
       }}
     >{children}</a>
   )
+}
+
+Link.propTypes = {
+  onClick: PropTypes.func,
+  children: PropTypes.any
 }
 
 export default Link

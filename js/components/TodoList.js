@@ -16,7 +16,7 @@ const TodoList = ({ todos, onTodoClick }) => {
 }
 
 TodoList.propTypes = {
-  todos: PropTypes.arr,
+  todos: PropTypes.any,
   onTodoClick: PropTypes.func
 }
 export default TodoList

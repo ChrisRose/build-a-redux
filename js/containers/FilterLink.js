@@ -15,7 +15,7 @@ const FilterLink = ({ filter, children }) => (
 
 FilterLink.propTypes = {
   filter: PropTypes.string.isRequired,
-  children: PropTypes.string.func
+  children: PropTypes.any
 }
 
 export default FilterLink

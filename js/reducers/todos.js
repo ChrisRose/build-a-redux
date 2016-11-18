@@ -2,7 +2,7 @@ const todo = (state = null, action) => {
   switch (action.type) {
     case 'ADD_TODO':
       return {
-        id: action.id,
+        id: Math.random(),
         text: action.text,
         completed: false
       }

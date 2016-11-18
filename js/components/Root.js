@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import AddTodo from '../containers/AddTodo'
 import VisibleTodoList from '../containers/VisibleTodoList'
 import Footer from './Footer'
+const { shape, string } = React.PropTypes
 
 const Root = ({params}) => {
   return (
@@ -14,7 +15,9 @@ const Root = ({params}) => {
 }
 
 Root.propTypes = {
-  params: PropTypes.obj
+  params: shape({
+    filter: string
+  })
 }
 
 export default Root
