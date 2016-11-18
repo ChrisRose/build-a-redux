@@ -1,20 +1,41 @@
-import React, { PropTypes } from 'react'
-import AddTodo from './containers/AddTodo'
-import VisibleTodoList from './containers/VisibleTodoList'
-import Footer from './components/Footer'
+import React, { Component, PropTypes } from 'react'
 
-const App = ({params}) => {
-  return (
-    <div>
-      <AddTodo />
-      <VisibleTodoList filter={params.filter || 'all'} />
-      <Footer />
-    </div>
-  )
+class App extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      value: ''
+    }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleKeyDown = this.handleKeyDown.bind(this)
+  }
+  handleChange (event) {
+    this.setState({value: event.target.value})
+  }
+  handleKeyDown (event) {
+    if (event.key === 'Enter') {
+      this.props.dispatch({type: 'ADD', text: event.target.value})
+      this.setState({value: ''})
+    }
+  }
+  render () {
+    return (
+      <div>
+        <input type='text'
+          value={this.state.value}
+          onChange={this.handleChange}
+          onKeyDown={this.handleKeyDown} />
+        <ul>
+          {this.props.state.todos.map(({id, text}) => <li key={id}>{text}</li>)}
+        </ul>
+      </div>
+    )
+  }
 }
 
 App.propTypes = {
-  params: PropTypes.obj
+  state: PropTypes.any,
+  dispatch: PropTypes.func
 }
 
 export default App

@@ -25,7 +25,10 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        loader: 'babel-loader'
+        loader: 'babel-loader',
+        query: {
+          presets: ['react']
+        }
       },
       {
         test: /\.json$/,
