@@ -16,8 +16,7 @@ const App = React.createClass({
       <BrowserRouter>
         <Provider store={store}>
           <Match
-            exactly
-            pattern='/:filter'
+            pattern='/:filter?'
             component={Root} />
         </Provider>
       </BrowserRouter>
