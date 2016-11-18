@@ -29,9 +29,19 @@ const mapDispatchToProps = (dispatch) => ({
   }
 })
 
+function progress (ComponentType, propName) {
+  return (props) => {
+    if (!props[propName]) {
+      return <img src='/public/ajax-loader.gif' />
+    } else {
+      return <ComponentType {...props} />
+    }
+  }
+}
+
 const VisibleTodoList = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TodoList)
+)(progress(TodoList, 'todos'))
 
 export default VisibleTodoList
