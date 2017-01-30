@@ -21,6 +21,8 @@ const todo = (state = null, action) => {
 
 const todos = (state = [], action) => {
   switch (action.type) {
+    case 'INIT':
+      return state
     case 'ADD_TODO':
       return [
         ...state,
@@ -30,6 +32,8 @@ const todos = (state = [], action) => {
       return state.map(t =>
         todo(t, action)
       )
+    case 'DATA_LOADED':
+      return action.todos
     default:
       return state
   }

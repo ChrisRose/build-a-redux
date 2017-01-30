@@ -4,19 +4,19 @@ import Todo from './Todo'
 const TodoList = ({ todos, onTodoClick }) => {
   return (
     <ul>
-      {todos.map(todo =>
+      {todos.map((todo, index) => (
         <Todo
-          key={todo.id}
+          key={index}
           {...todo}
           onClick={() => onTodoClick(todo.id)}
-          />
-      )}
+        />
+    ))}
     </ul>
   )
 }
 
 TodoList.propTypes = {
-  todos: PropTypes.arr,
+  todos: PropTypes.array,
   onTodoClick: PropTypes.func
 }
 export default TodoList

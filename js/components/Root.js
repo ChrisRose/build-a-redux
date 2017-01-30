@@ -14,7 +14,7 @@ const Root = ({params}) => {
 }
 
 Root.propTypes = {
-  params: PropTypes.obj
+  params: PropTypes.object
 }
 
 export default Root
