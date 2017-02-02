@@ -4,7 +4,8 @@ import App from './App'
 import { Observable, Subject } from 'rx'
 
 const state = {
-  todos: []
+  todos: [],
+  loading: true
 }
 
 const updater = (state, action) => {
@@ -15,11 +16,60 @@ const updater = (state, action) => {
     return todos.filter(({id}) => id !== action.id)
   } else if (action.type === 'UPDATE') {
     return {...state, text: action.text}
+  } else if (action.type === 'LOAD') {
+    return {...state, loading: true}
+  } else if (action.type === 'DATA_LOADING') {
+    return state
+  } else if (action.type === 'DATA_LOADED') {
+    return {...state, todos: action.todos}
   }
 }
 
 let actions = new Subject()
 
+function reduxSaga(store, program) {
+  let gen = program();
+  function recur(result) {
+    let { value: command, done } = gen.next(result);
+    if (done) {
+      return;
+    }
+
+    if (command.type === "call") {
+      let promise = command.fn();
+      promise.then(recur)
+    }
+    else if (command.type === "take") {
+      store.actions.
+        filter(action => action.type === command.actionType).
+        take(1).
+        subscribe(recur);
+    }
+    else if (command.type === "put") {
+      store.states.take(1).subscribe(recur);
+
+      store.dispatch(command.action)
+    }
+  }
+  recur();
+}
+
+function loadDataSaga() {
+
+}
+
+function* loadDataSaga() {
+  let action = yield { type: 'take', actionType: 'DATA_LOADING' }
+  let todos = yield {
+    type: 'call',
+    fn: () => new Promise(accept => {
+      setTimeout(() => accept([{id: Math.random(), text: 'Buy milk!'}]), 10000);
+    })
+  };
+  let state = yield { type: 'put', action: { todos, type: 'DATA_LOADED'}}
+}
+
+// [1,2,3].scan((state,input) => state + input, 0) -> [1,3,6]
 const createStore = (updater, state) => {
   const states = Observable.of(state).concat(actions.scan(updater, state))
 
@@ -27,6 +77,8 @@ const createStore = (updater, state) => {
     actions.onNext(action)
   }
   return {
+    states,
+    actions,
     getState () {
       return state
     },
@@ -80,6 +132,10 @@ export const connect = (Component) => {
 }
 
 let store = createStore(updater, state)
+
+reduxSaga(store, loadDataSaga)
+
+store.dispatch({ type: 'DATA_LOADING' })
 
 let ConnectedComponent = connect(App)
 

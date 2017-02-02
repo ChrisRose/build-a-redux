@@ -21,6 +21,7 @@ class App extends Component {
   render () {
     return (
       <div>
+        <div style={{display: this.state.loading ? 'block' : 'none'}}>Loading...</div>
         <input type='text'
           value={this.state.value}
           onChange={this.handleChange}
